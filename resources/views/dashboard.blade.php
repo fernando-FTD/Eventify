@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-bold text-2xl text-indigo-700 leading-tight">
-            🎉 Dashboard Eventify
-        </h2>
-    </x-slot>
-
     <div class="bg-gray-50 min-h-screen pb-20">
         <div class="max-w-7xl mx-auto px-6">
             <!-- Welcome -->
@@ -27,6 +21,23 @@
                 </div>
             </div>
 
+            <!-- Search Bar -->
+            <div class="mb-8 max-w-2xl mx-auto">
+                <form action="{{ route('events.index') }}" method="GET" class="relative">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        placeholder="Cari event..." 
+                        class="w-full px-5 py-3 pr-12 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    >
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+
             <!-- Filter Kategori -->
             <div class="text-center mb-8">
                 <h2 class="text-2xl font-bold text-gray-800">Kategori Event</h2>
@@ -42,7 +53,7 @@
             <div class="grid md:grid-cols-3 gap-8">
                 @foreach ([
                     ['Seminar Inovasi Teknologi', '12 Nov 2025', 'Aula Kampus', 'Rp 50.000', 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800'],
-                    ['Workshop UI/UX Design', '15 Nov 2025', 'Lab Multimedia', 'Rp 75.000', 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800'],
+                    ['Workshop UI/UX Design', '15 Nov 2025', 'Lab Multimedia', 'Rp 75.000', 'https://images.unsplash.com/photo-1557804506627-3a8a1a6d7e1e?w=800'],
                     ['Konser Kampus Merdeka', '20 Nov 2025', 'Lapangan Utama', 'Rp 100.000', 'https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?w=800'],
                     ['Seminar Kecerdasan Buatan', '5 Des 2025', 'Auditorium A', 'Rp 60.000', 'https://images.unsplash.com/photo-1581091870627-3a8a1a6d7e1e?w=800'],
                     ['Workshop Data Science', '10 Des 2025', 'Gedung FTI', 'Rp 85.000', 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800'],
