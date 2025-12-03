@@ -12,6 +12,10 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware(['guest', 'no.cache']);
 
+Route::view('/tentang', 'pages.tentang')->name('tentang');
+
+Route::view('/bantuan', 'pages.bantuan')->name('bantuan');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
