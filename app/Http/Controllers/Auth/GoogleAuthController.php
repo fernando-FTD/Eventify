@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Client; // <--- untuk ssl
 
 class GoogleAuthController extends Controller
 {
@@ -19,7 +21,9 @@ class GoogleAuthController extends Controller
         $intent = request()->query('intent', 'login');
         session(['google_auth_intent' => $intent]);
         
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->with(['prompt' => 'select_account']) // <--- INI KUNCI BIAR MUNCUL PILIH AKUN
+            ->redirect();
     }
 
     /**
@@ -28,16 +32,22 @@ class GoogleAuthController extends Controller
     public function callback()
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            $googleUser = Socialite::driver('google')
+                ->stateless()
+                ->setHttpClient(new Client(['verify' => false])) 
+                ->user();
+            // -------------------------------------
+
             $intent = session('google_auth_intent', 'login');
             
             $user = User::where('google_id', $googleUser->getId())
                 ->orWhere('email', $googleUser->getEmail())
                 ->first();
             
+            // LOGIKA REGISTER
             if ($intent === 'register') {
                 if ($user) {
-                    return redirect()->route('register')
+                    return redirect()->route('login')
                         ->with('error', 'Akun sudah terdaftar. Silakan login.');
                 }
                 
@@ -55,6 +65,7 @@ class GoogleAuthController extends Controller
                     ->with('success', 'Registrasi berhasil! Silakan login untuk melanjutkan.');
             }
             
+            // LOGIKA LOGIN
             if (!$user) {
                 return redirect()->route('login')
                     ->with('error', 'Akun belum terdaftar. Silakan daftar terlebih dahulu.');
@@ -77,9 +88,9 @@ class GoogleAuthController extends Controller
                 ->with('success', 'Berhasil masuk dengan Google!');
             
         } catch (\Exception $e) {
-            \Log::error('Google OAuth Error: ' . $e->getMessage());
+            Log::error('Google OAuth Error: ' . $e->getMessage());
             return redirect()->route('login')
-                ->with('error', 'Terjadi kesalahan saat autentikasi dengan Google.');
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }

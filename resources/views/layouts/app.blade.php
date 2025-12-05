@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         
         @stack('styles')
     </head>
@@ -38,7 +38,6 @@
             <footer class="bg-indigo-700 text-center text-white py-4 mt-auto">
                 <p>&copy; {{ date('Y') }} Eventify. All rights reserved.</p>
             </footer>
-            <!-- </CHANGE> -->
         </div>
         
         @stack('scripts')
